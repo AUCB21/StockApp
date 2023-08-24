@@ -98,7 +98,6 @@ Usuario* crearUsuario() {
     cin.ignore();
 
     cout << "Ingrese el nombre del usuario: ";
-    cin.ignore();
     getline(cin, usuario->nombre);
     
 
@@ -156,6 +155,8 @@ void mostrarUsuarios(const vector<Usuario*> usuarios) {
         cout << "===========================================" << endl;
     }
 }
+
+void guardarEnArchivo(const vector<Usuario*> usuarios, const char ruta);
 
 int main() {
     vector<Usuario*> usuarios;
