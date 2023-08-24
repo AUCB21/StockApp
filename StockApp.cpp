@@ -57,15 +57,11 @@ PC* crearPc() {
     PC* pc = new PC();
     cout << "Indique del codigo de la pc: ";
     cin >> pc->codigo;
-
-    cout << "[] Codigo ingresado: " << pc->codigo << endl;
     
     while (pc->tipoPc == Unspecified) {
         cout << "Ingrese el tipo de PC (PC_Desktop | Notebook | PC_AiO | PC_Cosud): ";
         string inputLine;
         cin >> inputLine;
-
-        cout << "[] Tipo ingresado: " << inputLine << endl;
 
         if (inputLine == "PC_Desktop")
             pc->tipoPc = PC_Desktop;
@@ -99,6 +95,7 @@ PC* crearPc() {
 Usuario* crearUsuario() {
     Usuario* usuario = new Usuario();
 
+    cin.ignore();
 
     cout << "Ingrese el nombre del usuario: ";
     cin.ignore();
@@ -106,6 +103,7 @@ Usuario* crearUsuario() {
     
 
     cout << "Ingrese el rubro del usuario: ";
+    cin.ignore();
     cin >> usuario->rubro;
     
     cin.ignore();
@@ -115,7 +113,7 @@ Usuario* crearUsuario() {
     return usuario;
 }
 
-void guardarUsuarios(vector<Usuario*>& usuarios, Usuario* usuario) {
+void guardarUsuarios(vector<Usuario*> &usuarios, Usuario*& usuario) {
     usuario->monitorAsociado->ubicacionGeografica = usuario->ubicacionGeografica;
     usuario->pcAsociada->ubicacionGeografica = usuario->ubicacionGeografica;
 
@@ -125,7 +123,7 @@ void guardarUsuarios(vector<Usuario*>& usuarios, Usuario* usuario) {
     usuarios.push_back(usuario);
 }
 
-void mostrarUsuarios(const vector<Usuario*>& usuarios) {
+void mostrarUsuarios(const vector<Usuario*> usuarios) {
     for (Usuario* usuario : usuarios) {
         cout << "El usuario es: " << usuario->nombre << ". " << endl;
         cout << "===========================================" << endl;
@@ -162,16 +160,26 @@ void mostrarUsuarios(const vector<Usuario*>& usuarios) {
 int main() {
     vector<Usuario*> usuarios;
 
-    Usuario *usr = crearUsuario();
+    int opcion = 0;
 
-    usr->monitorAsociado = crearMonitor();
-    usr->pcAsociada = crearPc();
+    cout << "Cuantos usuarios desea crear?: ";
+    cin >> opcion;
 
-    guardarUsuarios(usuarios, usr);
+    for (int i = 0; i < opcion; i++) {
+        cout << "=============Usuario " << i + 1 << "=============" << endl;
+        Usuario* usr = crearUsuario();
+
+        usr->monitorAsociado = crearMonitor();
+        usr->pcAsociada = crearPc();
+
+        guardarUsuarios(usuarios, usr);
+    }
+
     mostrarUsuarios(usuarios);
 
     // Liberar memoria de usuarios
     for (Usuario* u : usuarios) delete u;
+    usuarios.clear();
 
     return 0;
 }
